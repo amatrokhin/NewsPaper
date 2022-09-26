@@ -1,6 +1,8 @@
 from django import template
 import re
 
+from ..models import Category
+
 register = template.Library()
 
 CURSE_WORDS = ['хуй', 'пизда', 'ебать', 'блядь']                # list of unwanted words
@@ -23,3 +25,19 @@ def censor(string):                                             # modify string 
         print(e)
 
     return string
+
+
+@register.filter()
+def get_attribute(querydict, attr):                 # get attributes list from request.GET key
+    return querydict.getlist(attr)
+
+
+
+@register.filter()
+def get_attr_model(pk, attr):                       # get model via pk
+    if attr == 'category':
+        # pk is transfered as list with length 1
+        return Category.objects.get(pk=pk[0])
+
+    else:
+        return 'No such model'

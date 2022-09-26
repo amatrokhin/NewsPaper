@@ -1,11 +1,18 @@
+import re
+from datetime import datetime
+
 # Import class to output objects from DB
 from django.views.generic import (
     ListView, DetailView, CreateView, UpdateView, DeleteView
 )
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
+from django.db.models import Count
+from django.http import HttpResponseForbidden
 
-from .models import Post, Author
+from .models import Post, Author, Category
 from .filters import PostsFilter
 from .forms import PostsForm
 
@@ -18,7 +25,7 @@ class PostsList(ListView):                      # responsible for table of posts
 
 
 class PostDetail(DetailView):                   # responsible for detailed post output on a page
-    # queryset = Post.objects.filter(type='N')
+    # queryset = Post.objects.filter(type='N')  # first I wanted only news then I decideed that I want articles as well
     model = Post
     template_name = 'post.html'
     context_object_name = 'post'
@@ -56,17 +63,25 @@ class NewsCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):      
     def form_valid(self, form):
         news = form.save(commit=False)
 
-        # if user in authors group but not in authors base then add and assign as author otherwise just assign as author
+        # take author instance corresponding to the current user
         author = self.request.user
-        if author.groups.filter(name='authors').exists() \
-                and not Author.objects.filter(user=author).exists():
-            author = Author.objects.create(user=author)
-        elif Author.objects.filter(user=author).exists():
-            author = Author.objects.get(user=author)
+        author = Author.objects.get(user=author)
 
         form.instance.author = author
         news.type = 'N'
         return super().form_valid(form)
+
+    def get(self, request, *args, **kwargs):
+        cur_date = datetime.today().strftime('%Y-%m-%d')
+
+        author = Author.objects.get(user=request.user)
+        posts_today = Post.objects.filter(author=author, time_in__gte=cur_date).aggregate(Count('pk'))['pk__count']
+
+        # only allow maximum of 3 posts a day
+        if posts_today >= 3:
+            return HttpResponseForbidden('Вы не можете создавать более 3-х постов в день')
+        else:
+            return super().get(request, *args, **kwargs)
 
 
 class ArticlesCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):  # responsible for creating articles
@@ -80,17 +95,25 @@ class ArticlesCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):  
     def form_valid(self, form):
         news = form.save(commit=False)
 
-        # if user in authors group but not in authors base then add and assign as author otherwise just assign as author
+        # take author instance corresponding to the current user
         author = self.request.user
-        if author.groups.filter(name='authors').exists() \
-                and not Author.objects.filter(user=author).exists():
-            author = Author.objects.create(user=author)
-        elif Author.objects.filter(user=author).exists():
-            author = Author.objects.get(user=author)
+        author = Author.objects.get(user=author)
 
         form.instance.author = author
         news.type = 'A'
         return super().form_valid(form)
+
+    def get(self, request, *args, **kwargs):
+        cur_date = datetime.today().strftime('%Y-%m-%d')
+
+        author = Author.objects.get(user=request.user)
+        posts_today = Post.objects.filter(author=author, time_in__gte=cur_date).aggregate(Count('pk'))['pk__count']
+
+        # only allow maximum of 3 posts a day
+        if posts_today >= 3:
+            return HttpResponseForbidden('Вы не можете создавать более 3-х постов в день')
+        else:
+            return super().get(request, *args, **kwargs)
 
 
 class NewsUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):      # updates posts
@@ -107,3 +130,31 @@ class NewsDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):      
     model = Post
     template_name = 'post_delete.html'
     success_url = reverse_lazy('posts_list')
+
+
+@login_required
+def subscribe_cat(request, pk):                     # subscribe user to category he currently chose in a filter
+    user = request.user
+    cur_category = Category.objects.get(pk=pk)
+
+    # if user isn't subscribed to category then subscribe
+    if not user.category_set.filter(name=cur_category.name).exists():
+        cur_category.users.add(user)
+
+    # reload current page with parameters applied before
+    path = re.sub(r'/\d*/subscribe', '', request.get_full_path())
+    return redirect(path)
+
+
+@login_required
+def unsubscribe_cat(request, pk):                     # unsubscribe user from category he currently chose in a filter
+    user = request.user
+    cur_category = Category.objects.get(pk=pk)
+
+    # if user isn't subscribed to category then subscribe
+    if user.category_set.filter(name=cur_category.name).exists():
+        cur_category.users.remove(user)
+
+    # reload current page with parameters applied before
+    path = re.sub(r'/\d*/unsubscribe', '', request.get_full_path())
+    return redirect(path)

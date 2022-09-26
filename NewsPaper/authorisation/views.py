@@ -5,9 +5,11 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 
+from news.models import Author
+
 
 class IndexView(LoginRequiredMixin, TemplateView):                  # authorisation main view class
-    template_name = 'authorisation/default.html'
+    template_name = 'authorisation/account.html'
 
     def get_context_data(self, **kwargs):                           # modify context to know if in authors group
         context = super().get_context_data(**kwargs)
@@ -21,4 +23,5 @@ def upgrade_me(request):                                            # resposible
     author_group = Group.objects.get(name='authors')
     if not request.user.groups.filter(name='authors').exists():     # if not in authors then add otherwise skip
         author_group.user_set.add(user)
+        Author.objects.create(user=user)
     return redirect('/')

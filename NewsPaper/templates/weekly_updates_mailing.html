@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Новые посты за неделю</title>
+</head>
+<body>
+    <h1> Обновления за неделю в разделе "{{ category }}". </h1>
+    <h3> Посмотреть, что нового можно по ссылке:
+        <br>
+        <a href="http://127.0.0.1:8000/news/search/?author=&type=&title__icontains=&category={{ category.pk }}&time_in__gt={{ time }}">
+            http://127.0.0.1:8000/news/search/?author=&type=&title__icontains=&category={{ category.pk }}&time_in__gt={{ time }}
+        </a>
+    </h3>
+</body>
+</html>

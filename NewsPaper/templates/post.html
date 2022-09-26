@@ -10,8 +10,21 @@ Post
 <!-- Output a post that was sent to url -->
 {% block content %}
     <h1>{{ post.title|censor }}</h1>
-    <h2>{{ post.time_in|date:'d M Y' }}</h2>
-    <h5>{{ post.categories.all }}</h5>
+    <h4>Опубликован: {{ post.time_in|date:'d M Y' }}</h4>
+
+    <h5>Категории:
+    {% for category in post.categories.all %}
+
+        {% if forloop.counter != post.categories.all|length %}
+            {{ category }},
+        {% else %}
+            {{ category }}
+        {% endif %}
+
+    {% endfor %}
+    </h5>
+
+    <h5>Автор: {{ post.author }}</h5>
 
     <style>
     .text-justify {

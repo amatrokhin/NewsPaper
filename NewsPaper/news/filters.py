@@ -1,5 +1,5 @@
-from django_filters import FilterSet, ModelMultipleChoiceFilter, DateFilter, ChoiceFilter
-from django.forms.widgets import NumberInput, CheckboxSelectMultiple, CheckboxInput
+from django_filters import FilterSet, ModelMultipleChoiceFilter, DateFilter, ChoiceFilter, CharFilter
+from django.forms.widgets import NumberInput, CheckboxSelectMultiple
 
 from .models import Post, Category, POST_TYPES
 
@@ -24,6 +24,11 @@ class PostsFilter(FilterSet):                    # responsible for filters funct
     type = ChoiceFilter(                         # filter to show only news or articles or both
         choices=POST_TYPES,
         empty_label='любой'
+    )
+
+    author = CharFilter(                         # sort by author of the article; insert substring to find matches
+        field_name='author__user__username',
+        lookup_expr='icontains'
     )
 
     class Meta:

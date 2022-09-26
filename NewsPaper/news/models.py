@@ -26,6 +26,9 @@ class Author(models.Model):                 # table of authors
 class Category(models.Model):               # table of categories
     name = models.CharField(max_length=30, unique=True)
 
+    # subscribers to category; for mailing list
+    users = models.ManyToManyField(User, through='Subscribers')
+
     def __str__(self):
         return self.name.title()
 
@@ -77,3 +80,8 @@ class Comment(models.Model):                # table of comments to posts
 
     def dislike(self):
         self.rating -= 1
+
+
+class Subscribers(models.Model):            # many-to-many relation between users and categories
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)

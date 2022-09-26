@@ -12,7 +12,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
-from .private import SECRET_KEY
+from .private import (
+    SECRET_KEY, EMAIL_HOST_PASSWORD, EMAIL_HOST_USER, DEFAULT_FROM_EMAIL
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'news',
+    'news.apps.NewsConfig',         # rewrite app name to config so signal handlers would work
     'articles',
     'django.contrib.sites',
     'django.contrib.flatpages',
@@ -51,6 +53,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+
+    'django_apscheduler',
 ]
 
 SITE_ID = 1
@@ -77,12 +81,9 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
-                'django.template.context_processors.request',
+                'django.template.context_processors.request',   # allauth requires this (but it's default)
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-
-                # allauth required this
-                'django.template.context_processors.request',
             ],
         },
     },
@@ -161,8 +162,17 @@ AUTHENTICATION_BACKENDS = [
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_AUTHENTICATION_METHOD = 'email'     # athentification via email
-ACCOUNT_EMAIL_VERIFICATION = 'none'
-
+ACCOUNT_AUTHENTICATION_METHOD = 'email'              # athentification via email
+ACCOUNT_EMAIL_VERIFICATION = 'optional'              # allows to log in before verifying an email
 # for CommonSignupForm to override standart SignupForm
 ACCOUNT_FORMS = {'signup': 'authorisation.forms.CommonSignupForm'}
+
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True         # to confirm email only by clicking on a link
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 2  # days when link is active
+
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"        # datetime format for apscheduler
+APSCHEDULER_RUN_NOW_TIMEOUT = 25  # Seconds          #if task isn't done in 25 seconds apscheduler abandons it

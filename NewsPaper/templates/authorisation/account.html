@@ -1,0 +1,53 @@
+{% extends "flatpages/default.html" %}
+
+{% load custom_filters %}
+
+{% block content %}
+<h2>Страница авторизованного пользователя {{request.user.username}}</h2>
+<div> Здесь может содержаться персональная информация для каждого пользователя </div>
+<br>
+
+<div class="container">
+    Вы подписаны на категории:
+    <br>
+    <br>
+
+    {% for category in request.user.category_set.all %}
+        <li class="nav-item dropdown"> {{ category }}
+        &emsp;&emsp;
+    <!-- unsub from category -->
+
+        <a href="{{ category.pk }}/unsubscribe/">
+            Отписаться
+        </a>
+
+        </li>
+
+
+
+        <br>
+        <br>
+    {% endfor %}
+
+
+</div>
+
+<a href="news/search/?author={{ request.user.username }}&type=&title__icontains=&time_in__gt=">Ваши посты</a>
+
+<br>
+<br>
+<br>
+
+{% if is_not_author %}
+
+<button> <a href="upgrade/">Стать автором</a> </button>
+&emsp;&emsp;&emsp;&emsp;
+<button> <a href="logout/">Выйти</a> </button>
+
+{% else %}
+
+<button> <a href="logout/">Выйти</a> </button>
+
+{% endif %}
+
+{% endblock %}

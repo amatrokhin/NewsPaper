@@ -15,6 +15,10 @@ Posts search
     {# Add form that has field that will be send in query #}
     <form action="" method="get" align="center">
 
+        Автор: {{ filterset.form.author }}
+        <br>
+        <br>
+
         Искать только: {{ filterset.form.type }}
         <br>
         <br>
@@ -23,8 +27,8 @@ Posts search
         <br>
         <br>
 
-        <!-- Хоти вот так, но чтобы без полос прокрутки. Тогда квадратики в категориях будут ровно друг под другом-->
-        {# <div style="text-align:left; position:relative; right:-620px"> #}
+        <!-- Хотим вот так, но чтобы без полос прокрутки. Тогда квадратики в категориях будут ровно друг под другом-->
+        <!-- <div style="text-align:left; position:relative; right:-620px"> -->
         <div>
             {{ filterset.form.category.label }}: {{ filterset.form.category }}
         </div>
@@ -35,8 +39,40 @@ Posts search
         <br>
         <br>
 
-        {# Button to apply filter #}
-        <input type="submit" value="Найти" />
+        {# Button to apply filter center-aligned and button to subscribe to category right-alighned on one row #}
+        <div class="row">
+            <div class="col-7" align="right">
+                <input type="submit" value="Найти" />
+                &emsp;&emsp;&emsp;&emsp;
+            </div>
+
+            <div class="col" align="right">
+
+                <!-- Subscribe button only if one category chosen-->
+                {% if request.GET|get_attribute:'category'|length == 1 %}
+
+                <!-- basicly this if-operator is for determining whether user is subscribed or not to a category he chose-->
+                    {% if request.GET|get_attribute:'category'|get_attr_model:'category' not in request.user.category_set.all %}
+                        <button>
+                            <a href="{{ request.GET.category }}/subscribe/?type={{ request.GET.type }}&title__icontains={{ request.GET.title__icontains }}&category={{ request.GET.category }}&time_in__gt={{ request.GET.time_in__gt }}">
+                                Подписаться на категорию
+                                "{{ request.GET|get_attribute:'category'|get_attr_model:'category' }}"
+                            </a>
+                        </button>
+
+                    {% else %}
+                        <button>
+                            <a href="{{ request.GET.category }}/unsubscribe/?type={{ request.GET.type }}&title__icontains={{ request.GET.title__icontains }}&category={{ request.GET.category }}&time_in__gt={{ request.GET.time_in__gt }}">
+                                Отписаться от категории
+                                "{{ request.GET|get_attribute:'category'|get_attr_model:'category' }}"
+                            </a>
+                        </button>
+                    {% endif %}
+
+                {% endif %}
+            </div>
+
+        </div>
     </form>
 
     <hr>
