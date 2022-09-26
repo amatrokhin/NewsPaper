@@ -53,8 +53,6 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-
-    'django_apscheduler',
 ]
 
 SITE_ID = 1
@@ -174,5 +172,8 @@ EMAIL_USE_SSL = True
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True         # to confirm email only by clicking on a link
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 2  # days when link is active
 
-APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"        # datetime format for apscheduler
-APSCHEDULER_RUN_NOW_TIMEOUT = 25  # Seconds          #if task isn't done in 25 seconds apscheduler abandons it
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'

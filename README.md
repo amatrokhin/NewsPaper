@@ -1,14 +1,8 @@
-Все работает как надо, единственное не могу проверить правильно ли установлен CronTrigger
-в runapscheduler. По идее правильно, он должен срабатывать каждое вс в 12:00.
+добавлены файлы celery и tasks для асинхронного выполнения почтовой рассылки.
 
-    scheduler.add_job(
-        my_job,
-        trigger=CronTrigger(minute=0, hour=12, day_of_week='sun'),      # every sunday at 12:00
-        id="my_job",                                                    # unique id
-        max_instances=1,
-        replace_existing=True,
-    )
+Еженедельная рассылка теперь реализована через celery, а не через apscheduler.
 
-Добавлено еще несколько ссылок в личном кабинете для удобства, переделан путь отписки из личного
-кабинета. Как оказалось, раньше при удалении поста пользователь переходил в лк, а по задумке 
-должен был на главную. Это поведение исправлено.
+Celery запускается в различных окнах через команды (для windows):
+
+    celery -A NewsPaper worker -l INFO -P eventlet
+    celery -A NewsPaper beat -l INFO
