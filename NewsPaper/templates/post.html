@@ -1,0 +1,24 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/default.html' %}
+
+<!-- Название у нас будет Product -->
+{% block title %}
+Post
+{% endblock title %}
+
+{% load custom_filters %}
+
+<!-- В контенте на странице мы выводим сам товар, идентификатор которого был передан в url -->
+{% block content %}
+    <h1>{{ post.title|censor }}</h1>
+    <h2>{{ post.time_in|date:'d M Y' }}</h2>
+
+    <style>
+    .text-justify {
+     text-align: justify; /* Выравнивание по ширине */
+    }
+    </style>
+    <div class="text-justify", style="white-space: pre-line">
+        {{ post.text|censor }}
+    </div>
+{% endblock content %}

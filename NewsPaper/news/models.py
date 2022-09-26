@@ -22,6 +22,9 @@ class Author(models.Model):                 # table of authors
 class Category(models.Model):               # table of categories
     cat_name = models.CharField(max_length=30, unique=True)
 
+    def __str__(self):
+        return self.name.title()
+
 
 POST_TYPES = [('N', 'news'), ('A', 'article')]
 
@@ -44,6 +47,9 @@ class Post(models.Model):                   # table of news and articles
 
     def preview(self):
         return self.text[:124] + '...'
+
+    def __str__(self):
+        return f'{self.title.title()} by {self.author.user.username} {self.preview()}'
 
 
 class PostCategory(models.Model):           # table for many-to-many relation between posts and categories
