@@ -21,4 +21,6 @@ urlpatterns = [
    path('pages/', include('django.contrib.flatpages.urls')),
    path('news/', include('news.urls')),
    path('articles/', include('articles.urls')),
+   path('', include('authorisation.urls')),
+   path('', include('allauth.urls')),
 ]

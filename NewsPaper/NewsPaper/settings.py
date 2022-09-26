@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -40,9 +40,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'news',
+    'articles',
     'django.contrib.sites',
     'django.contrib.flatpages',
     'django_filters',
+
+    'authorisation',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 SITE_ID = 1
@@ -72,6 +80,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                # allauth required this
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -136,3 +147,22 @@ STATICFILES_DIRS = [
     BASE_DIR / "static"
 ]
 
+LOGIN_URL = '/login/'               # redirect unlogged user from page for only logged users
+LOGIN_REDIRECT_URL = 'posts_list'   # redirect after login
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'     # athentification via email
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+# for CommonSignupForm to override standart SignupForm
+ACCOUNT_FORMS = {'signup': 'authorisation.forms.CommonSignupForm'}

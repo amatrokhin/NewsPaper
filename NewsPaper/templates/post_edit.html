@@ -1,11 +1,10 @@
 {% extends 'flatpages/default.html' %}
 
-
 {% block content %}
 
-{% if object.type == 'N' %}
+{% if 'news' in request.path %}
 <h1>Параметры новости</h1>
-{% elif object.type == 'A' %}
+{% elif 'articles' in request.path %}
 <h1>Параметры статьи</h1>
 {% endif %}
 <hr>
@@ -13,12 +12,12 @@
 <form action="" method="post">
     {% csrf_token %}
 
-    (пока выбираем из тех, что есть, затем будет автоматом выбираться от заполняющего зарегистрированного пользователя)
+    <!-- (пока выбираем из тех, что есть, затем будет автоматом выбираться от заполняющего зарегистрированного пользователя)
     <br>
     Автор:
     <br>
     {{ form.author }}
-    <br><br>
+    <br><br> -->
 
     Заголовок:
     <br>

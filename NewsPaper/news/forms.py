@@ -5,6 +5,9 @@ from .models import Post, Category
 
 
 class PostsForm(forms.ModelForm):                    # responsible for form to create news
+
+    # the following 3 fields work only if they are present in Meta.fields as well
+    # otherwise these fields are present on a page but they don't transfer input to the DB
     title = forms.CharField(
         widget=forms.Textarea(attrs={
             'required': True,                       # To notify creator to fill the field
@@ -23,7 +26,6 @@ class PostsForm(forms.ModelForm):                    # responsible for form to c
         })
     )
 
-    # somehow this works with Meta.field but not on its own
     categories = forms.ModelMultipleChoiceField(    # purely for cosmetic reasons
         queryset=Category.objects.all(),
         widget=forms.CheckboxSelectMultiple()
@@ -32,7 +34,7 @@ class PostsForm(forms.ModelForm):                    # responsible for form to c
     class Meta:
         model = Post
         fields = [
-            'author',
+    #        'author',                              # don't need it no more as now user becomes author automatically
             'title',
             'text',
             'categories',
