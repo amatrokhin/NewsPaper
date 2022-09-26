@@ -1,0 +1,110 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+{% load custom_tags %}
+
+{% block title %}
+Posts
+{% endblock title %}
+
+{% block content %}
+    <h1>Поиск постов</h1>
+    <h3> Количество постов на странице: {{ posts_search|length }} </h3>
+    <br>
+
+    {# Add form that has field that will be send in query #}
+    <form action="" method="get" align="center">
+
+        Искать только: {{ filterset.form.type }}
+        <br>
+        <br>
+
+        Название содержит: {{ filterset.form.title__icontains }}
+        <br>
+        <br>
+
+        <!-- Хоти вот так, но чтобы без полос прокрутки. Тогда квадратики в категориях будут ровно друг под другом-->
+        {# <div style="text-align:left; position:relative; right:-620px"> #}
+        <div>
+            {{ filterset.form.category.label }}: {{ filterset.form.category }}
+        </div>
+        <br>
+
+        {{ filterset.form.time_in__gt.label }}: {{ filterset.form.time_in__gt }}
+
+        <br>
+        <br>
+
+        {# Button to apply filter #}
+        <input type="submit" value="Найти" />
+    </form>
+
+    <hr>
+    {% if posts_search %}
+
+        <table class="table">
+            <tr>
+                <td>Новость/Статья</td>
+                <td>Категории</td>
+                <td>Заголовок</td>
+                <td>Дата публикации</td>
+                <td>Предпросмотр</td>
+            </tr>
+
+            {% for post in posts_search %}
+                <tr style="height:50px">
+                    {% if post.type == 'N' %}
+                        <td>Новость</td>
+                    {% elif post.type == 'A' %}
+                        <td>Статья</td>
+                    {% endif %}
+
+                <td>
+                {% for category in post.categories.all %}
+                {{ category.name }}
+                    {% if forloop.counter != post.categories.all|length %}
+                        ,
+                        {% if not forloop.counter0|divisibleby:2 %}
+                            <br>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                </td>
+
+                {# go to news or articles/post_pk #}
+                <td><a href='../{{ post.pk }}'>{{ post.title|censor }}</a></td>
+                <td>{{ post.time_in|date:'d M Y' }}</td>
+                <td>{{ post.text|truncatewords:20|censor }}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+    {% else %}
+        <h2>Пока никаких новостей</h2>
+    {% endif %}
+
+    {# Add pagination #}
+
+    {# Info of previous pages #}
+    {% if page_obj.has_previous %}
+        <a href="?{% url_replace page=1 %}">1</a>
+        {% if page_obj.previous_page_number != 1 %}
+            ...
+            <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+        {% endif %}
+    {% endif %}
+
+    {# Info of current page #}
+    {{ page_obj.number }}
+
+    {# Info of next pages #}
+    {% if page_obj.has_next %}
+        <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+        {% if paginator.num_pages != page_obj.next_page_number %}
+            ...
+            <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+        {% endif %}
+    {% endif %}
+
+<hr>
+{% endblock content %}

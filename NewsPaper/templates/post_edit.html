@@ -1,0 +1,42 @@
+{% extends 'flatpages/default.html' %}
+
+
+{% block content %}
+
+{% if object.type == 'N' %}
+<h1>Параметры новости</h1>
+{% elif object.type == 'A' %}
+<h1>Параметры статьи</h1>
+{% endif %}
+<hr>
+
+<form action="" method="post">
+    {% csrf_token %}
+
+    (пока выбираем из тех, что есть, затем будет автоматом выбираться от заполняющего зарегистрированного пользователя)
+    <br>
+    Автор:
+    <br>
+    {{ form.author }}
+    <br><br>
+
+    Заголовок:
+    <br>
+    {{ form.title }}
+    <br><br>
+
+    Текст:
+    <br>
+    {{ form.text }}
+    <br><br>
+
+    Категории:
+    <br>
+    {{ form.categories}}
+    <br>
+
+    <input type="submit" value="Save" />
+
+    <hr>
+</form>
+{% endblock content %}
