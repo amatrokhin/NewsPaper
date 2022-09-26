@@ -1,14 +1,41 @@
 {% extends "flatpages/default.html" %}
 
 {% load custom_filters %}
+{% load i18n %}
+{% load tz %}
 
 {% block content %}
-<h2>Страница авторизованного пользователя {{request.user.username}}</h2>
+<h2>{% trans "Страница авторизованного пользователя" %} {{request.user.username}}</h2>
+<br>
+
+<!-- next form is for displaying timezone options -->
+{% get_current_timezone as TIME_ZONE %}
+
+<form action="" method="POST">
+    {% csrf_token %}
+
+    <label for="timezone">Time zone:</label>
+
+    <select name="timezone">
+        {% for tz in timezones %}
+        <option value="{{ tz }}"{% if tz == TIME_ZONE %} selected{% endif %}>{{ tz }}</option>
+        {% endfor %}
+    </select>
+
+    <input type="submit" value="Set">
+</form>
+
+<!-- show time based on choseed timezone -->
+{{ TIME_ZONE }}
+{{ current_time|timezone:TIME_ZONE }} <!-- show time in selected timezone  -->
+<br>
+<br>
+
 <div> Здесь может содержаться персональная информация для каждого пользователя </div>
 <br>
 
 <div class="container">
-    Вы подписаны на категории:
+    {% trans "Вы подписаны на категории" %}:
     <br>
     <br>
 
@@ -18,7 +45,7 @@
     <!-- unsub from category -->
 
         <a href="{{ category.pk }}/unsubscribe/">
-            Отписаться
+            {% trans "Отписаться" %}
         </a>
 
         </li>
@@ -32,7 +59,7 @@
 
 </div>
 
-<a href="news/search/?author={{ request.user.username }}&type=&title__icontains=&time_in__gt=">Ваши посты</a>
+<a href="news/search/?author={{ request.user.username }}&type=&title__icontains=&time_in__gt=">{% trans "Ваши посты" %}</a>
 
 <br>
 <br>
@@ -40,13 +67,13 @@
 
 {% if is_not_author %}
 
-<button> <a href="upgrade/">Стать автором</a> </button>
+<button> <a href="upgrade/">{% trans "Стать автором" %}</a> </button>
 &emsp;&emsp;&emsp;&emsp;
-<button> <a href="logout/">Выйти</a> </button>
+<button> <a href="logout/">{% trans "Выйти" %}</a> </button>
 
 {% else %}
 
-<button> <a href="logout/">Выйти</a> </button>
+<button> <a href="logout/">{% trans "Выйти" %}</a> </button>
 
 {% endif %}
 

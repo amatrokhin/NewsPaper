@@ -4,7 +4,6 @@ from .views import (
 )
 from django.views.decorators.cache import cache_page
 
-
 urlpatterns = [
    # path('', cache_page(60)(PostsList.as_view()), name='posts_list'),  # cache 1 min for educational purposes
    path('', PostsList.as_view(), name='posts_list'),

@@ -1,0 +1,189 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-09-22 16:16+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: .\news\filters.py:13
+msgid "Показать посты начиная от"
+msgstr "Show posts starting from"
+
+#: .\news\filters.py:20 .\templates\post.html:15 .\templates\post_edit.html:32
+#: .\templates\posts_search.html:84
+msgid "Категории"
+msgstr "Categories"
+
+#: .\news\forms.py:15
+msgid "Ваш заголовок тут"
+msgstr "Put your title here"
+
+#: .\news\forms.py:25
+msgid "Ваш текст здесь"
+msgstr "Ptu your text here"
+
+#: .\news\forms.py:51
+msgid "Заголовок и текст статьи не должны совпадать."
+msgstr "Title and text must be different"
+
+#: .\news\views.py:98 .\news\views.py:131
+msgid "Вы не можете создавать более 3-х постов в день"
+msgstr "You cannot create more than 3 posts a day"
+
+#: .\templates\authorisation\account.html:6
+msgid "Страница авторизованного пользователя"
+msgstr "Authorised user page"
+
+#: .\templates\authorisation\account.html:11
+msgid "Вы подписаны на категории"
+msgstr "You are subscribed to categories"
+
+#: .\templates\authorisation\account.html:21
+msgid "Отписаться"
+msgstr "Unsubscribe"
+
+#: .\templates\authorisation\account.html:35
+msgid "Ваши посты"
+msgstr "Your posts"
+
+#: .\templates\authorisation\account.html:43
+msgid "Стать автором"
+msgstr "Become an author"
+
+#: .\templates\authorisation\account.html:45
+#: .\templates\authorisation\account.html:49
+msgid "Выйти"
+msgstr "Sign out"
+
+#: .\templates\flatpages\default.html:24
+msgid "На главную"
+msgstr "Main"
+
+#: .\templates\flatpages\default.html:25
+msgid "Поиск"
+msgstr "Search"
+
+#: .\templates\flatpages\default.html:29
+msgid "Создать новость"
+msgstr "Create news"
+
+#: .\templates\flatpages\default.html:30
+msgid "Создать статью"
+msgstr "Create article"
+
+#: .\templates\flatpages\default.html:32
+msgid "Личный кабинет"
+msgstr "Personal space"
+
+#: .\templates\flatpages\default.html:66
+msgid "Права не защищены, все совпадения неслучайны"
+msgstr "Rights not reserved, all coincidences are not accidental"
+
+#: .\templates\post.html:13
+msgid "Опубликован"
+msgstr "Published"
+
+#: .\templates\post.html:27 .\templates\posts_search.html:18
+msgid "Автор"
+msgstr "Author"
+
+#: .\templates\post.html:41 .\templates\post.html:47
+msgid "Редактировать"
+msgstr "Edit"
+
+#: .\templates\post.html:43 .\templates\post.html:49
+msgid "Удалить"
+msgstr "Delete"
+
+#: .\templates\post_delete.html:6
+msgid "Удаление новости"
+msgstr "Deleting news"
+
+#: .\templates\post_delete.html:8
+msgid "Удаление статьи"
+msgstr "Deleting article"
+
+#: .\templates\post_delete.html:14
+msgid "Удаляем"
+msgstr "Delete"
+
+#: .\templates\post_edit.html:6
+msgid "Параметры новости"
+msgstr "News parameters"
+
+#: .\templates\post_edit.html:8
+msgid "Параметры статьи"
+msgstr "Article parameters"
+
+#: .\templates\post_edit.html:22 .\templates\posts_list.html:18
+#: .\templates\posts_search.html:85
+msgid "Заголовок"
+msgstr "Title"
+
+#: .\templates\post_edit.html:27
+msgid "Текст"
+msgstr "Text"
+
+#: .\templates\posts_list.html:11
+msgid "Все посты"
+msgstr "All posts"
+
+#: .\templates\posts_list.html:12 .\templates\posts_search.html:12
+msgid "Количество постов на странице"
+msgstr "Number of posts on page"
+
+#: .\templates\posts_list.html:17 .\templates\posts_search.html:83
+msgid "Новость/Статья"
+msgstr "News/Article"
+
+#: .\templates\posts_list.html:19 .\templates\posts_search.html:86
+msgid "Дата публикации"
+msgstr "Publication date"
+
+#: .\templates\posts_list.html:20 .\templates\posts_search.html:87
+msgid "Предпросмотр"
+msgstr "previw"
+
+#: .\templates\posts_list.html:26 .\templates\posts_search.html:93
+msgid "Новость"
+msgstr "News"
+
+#: .\templates\posts_list.html:28 .\templates\posts_search.html:95
+msgid "Статья"
+msgstr "Article"
+
+#: .\templates\posts_list.html:39 .\templates\posts_search.html:119
+msgid "Пока никаких новостей"
+msgstr "No news yet"
+
+#: .\templates\posts_search.html:11
+msgid "Поиск постов"
+msgstr "Posts search"
+
+#: .\templates\posts_search.html:22
+msgid "Искать только"
+msgstr "Search only"
+
+#: .\templates\posts_search.html:26
+msgid "Название содержит"
+msgstr "Title contains"
+
+#: .\templates\posts_search.html:58
+msgid "Подписаться на категорию"
+msgstr "Subscribe to category"
+
+#: .\templates\posts_search.html:66
+msgid "Отписаться от категории"
+msgstr "Unsubscribe from category"

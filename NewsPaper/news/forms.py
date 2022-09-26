@@ -1,5 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from django.utils.translation import gettext
 
 from .models import Post, Category
 
@@ -11,7 +12,7 @@ class PostsForm(forms.ModelForm):                    # responsible for form to c
     title = forms.CharField(
         widget=forms.Textarea(attrs={
             'required': True,                       # To notify creator to fill the field
-            'placeholder': 'Ваш заголовок тут',
+            'placeholder': gettext('Ваш заголовок тут'),
             'cols': 120,
             'rows': 1,
         })
@@ -21,7 +22,7 @@ class PostsForm(forms.ModelForm):                    # responsible for form to c
         min_length=20,
         widget=forms.Textarea(attrs={
             'required': True,
-            'placeholder': 'Ваш текст здесь',
+            'placeholder': gettext('Ваш текст здесь'),
             'cols': 160,
         })
     )
@@ -47,7 +48,7 @@ class PostsForm(forms.ModelForm):                    # responsible for form to c
 
         if title == text:
             raise ValidationError(
-                "Заголовок и текст статьи не должны совпадать."
+                gettext("Заголовок и текст статьи не должны совпадать.")
             )
 
         return cleaned_data

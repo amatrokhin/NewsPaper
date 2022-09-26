@@ -32,7 +32,6 @@ def get_attribute(querydict, attr):                 # get attributes list from r
     return querydict.getlist(attr)
 
 
-
 @register.filter()
 def get_attr_model(pk, attr):                       # get model via pk
     if attr == 'category':

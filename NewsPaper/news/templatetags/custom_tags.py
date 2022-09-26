@@ -1,5 +1,5 @@
-from datetime import datetime
 from django import template
+from django.utils import timezone
 
 register = template.Library()
 
@@ -12,6 +12,8 @@ def url_replace(context, **kwargs):                     # replace value of a par
     return d.urlencode()
 
 
-@register.simple_tag()
-def current_time(format_string='%b %d %Y'):
-    return datetime.utcnow().strftime(format_string)
+@register.simple_tag(takes_context=True)                # add timezone to context so we could alter theme using only this tag in default.html
+def current_time(context, **kwargs):
+    context['current_time'] = timezone.now()
+    return ''                                           # return empty string, so there would be no None in default.html
+

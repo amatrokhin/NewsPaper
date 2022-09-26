@@ -2,30 +2,56 @@
 
 {% load custom_filters %}
 {% load custom_tags %}
+{% load i18n %}   {# for translation #}
+{% load tz %}     {# for timezones #}
 
 {% block title %}
 Posts
 {% endblock title %}
 
 {% block content %}
-    <h1>Все посты</h1>
-     <h3> Количество постов на странице: {{ posts|length }} </h3>
+    <!-- next form is for displaying timezone options -->
+    {% get_current_timezone as TIME_ZONE %}
+    <form action="" method="POST">
+        {% csrf_token %}
+
+        <label for="timezone">Time zone:</label>
+
+        <select name="timezone">
+            {% for tz in timezones %}
+            <option value="{{ tz }}"{% if tz == TIME_ZONE %} selected{% endif %}>{{ tz }}</option>
+            {% endfor %}
+        </select>
+
+        <input type="submit" value="Set">
+    </form>
+
+    <!-- show time based on choseed timezone -->
+    {{ TIME_ZONE }}
+    {{ current_time|timezone:TIME_ZONE }} <!-- show time in selected timezone  -->
+
+    <br>
     <hr>
+
+    <h1>{% trans "Все посты" %}</h1>
+     <h3> {% trans "Количество постов на странице" %}: {{ posts|length }} </h3>
+    <hr>
+
     {% if posts %}
         <table class="table">
             <tr>
-                <td>Новость/Статья</td>
-                <td>Заголовок</td>
-                <td>Дата публикации</td>
-                <td>Предпросмотр</td>
+                <td>{% trans "Новость/Статья" %}</td>
+                <td>{% trans "Заголовок" %}</td>
+                <td>{% trans "Дата публикации" %}</td>
+                <td>{% trans "Предпросмотр" %}</td>
             </tr>
 
             {% for post in posts %}
                 <tr style="height:50px">
                     {% if post.type == 'N' %}
-                        <td>Новость</td>
+                        <td>{% trans "Новость" %}</td>
                     {% elif post.type == 'A' %}
-                        <td>Статья</td>
+                        <td>{% trans "Статья" %}</td>
                     {% endif %}
 
                 <td><a href='{{ post.pk }}'>{{ post.title|censor }}</a></td>
@@ -36,7 +62,7 @@ Posts
 
         </table>
     {% else %}
-        <h2>Пока никаких новостей</h2>
+        <h2>{% trans "Пока никаких новостей" %}</h2>
     {% endif %}
 
     {# Add pagination #}

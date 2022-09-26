@@ -1,11 +1,12 @@
 {% extends 'flatpages/default.html' %}
 
 {% block content %}
+{% load i18n %}
 
 {% if 'news' in request.path %}
-<h1>Параметры новости</h1>
+<h1>{% trans "Параметры новости" %}</h1>
 {% elif 'articles' in request.path %}
-<h1>Параметры статьи</h1>
+<h1>{% trans "Параметры статьи" %}</h1>
 {% endif %}
 <hr>
 
@@ -19,17 +20,17 @@
     {{ form.author }}
     <br><br> -->
 
-    Заголовок:
+    {% trans "Заголовок" %}:
     <br>
     {{ form.title }}
     <br><br>
 
-    Текст:
+    {% trans "Текст" %}:
     <br>
     {{ form.text }}
     <br><br>
 
-    Категории:
+    {% trans "Категории" %}:
     <br>
     {{ form.categories}}
     <br>

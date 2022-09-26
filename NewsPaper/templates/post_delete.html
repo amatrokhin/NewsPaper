@@ -1,17 +1,18 @@
 {% extends 'flatpages/default.html' %}
 
 {% block content %}
+{% load i18n %}
 
 {% if object.type == 'N' %}
-<h1>Удаление новости</h1>
+<h1>{% trans "Удаление новости" %}</h1>
 {% elif object.type == 'A' %}
-<h1>Удаление статьи</h1>
+<h1>{% trans "Удаление статьи" %}</h1>
 {% endif %}
 
 <hr>
 <form action="" method="post">
     {% csrf_token %}
-    <p>Удаляем "{{ object.title }}"?</p>
+    <p>{% trans "Удаляем" %} "{{ object.title }}"?</p>
     <input type="submit" value="Delete" />
 </form>
 {% endblock content %}

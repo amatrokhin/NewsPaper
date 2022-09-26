@@ -1,5 +1,6 @@
 from django_filters import FilterSet, ModelMultipleChoiceFilter, DateFilter, ChoiceFilter, CharFilter
 from django.forms.widgets import NumberInput, CheckboxSelectMultiple
+from django.utils.translation import gettext
 
 from .models import Post, Category, POST_TYPES
 
@@ -9,14 +10,14 @@ class PostsFilter(FilterSet):                    # responsible for filters funct
     time_in__gt = DateFilter(                    # filer to show posts after certain date
         field_name='time_in',
         lookup_expr='gt',
-        label='Показать посты начиная от',
+        label=gettext('Показать посты начиная от'),
         widget=NumberInput(attrs={'type': 'date'}),
     )
 
     category = ModelMultipleChoiceFilter(        # filter to show posts of a specific category
         field_name='postcategory__category',
         queryset=Category.objects.all(),
-        label='Категории',
+        label=gettext('Категории'),
         conjoined=True,
         widget=CheckboxSelectMultiple(),
     )

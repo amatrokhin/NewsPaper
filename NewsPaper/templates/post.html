@@ -6,13 +6,14 @@ Post
 {% endblock title %}
 
 {% load custom_filters %}
+{% load i18n %}
 
 <!-- Output a post that was sent to url -->
 {% block content %}
     <h1>{{ post.title|censor }}</h1>
-    <h4>Опубликован: {{ post.time_in|date:'d M Y' }}</h4>
+    <h4>{% trans "Опубликован" %}: {{ post.time_in|date:'d M Y' }}</h4>
 
-    <h5>Категории:
+    <h5>{% trans "Категории" %}:
     {% for category in post.categories.all %}
 
         {% if forloop.counter != post.categories.all|length %}
@@ -24,7 +25,7 @@ Post
     {% endfor %}
     </h5>
 
-    <h5>Автор: {{ post.author }}</h5>
+    <h5>{% trans "Автор" %}: {{ post.author }}</h5>
 
     <style>
     .text-justify {
@@ -38,15 +39,15 @@ Post
 
 {% if post.type == 'N' %}
 <div>
-    <a href="/news/{{ post.pk }}/update/">Редактировать</a>
+    <a href="/news/{{ post.pk }}/update/">{% trans "Редактировать" %}</a>
     &emsp;&emsp;&emsp;&emsp;
-    <a href="/news/{{ post.pk }}/delete/">Удалить</a>
+    <a href="/news/{{ post.pk }}/delete/">{% trans "Удалить" %}</a>
 </div>
 {% elif post.type == 'A' %}
 <div>
-    <a href="/articles/{{ post.pk }}/update/">Редактировать</a>
+    <a href="/articles/{{ post.pk }}/update/">{% trans "Редактировать" %}</a>
     &emsp;&emsp;&emsp;&emsp;
-    <a href="/articles/{{ post.pk }}/delete/">Удалить</a>
+    <a href="/articles/{{ post.pk }}/delete/">{% trans "Удалить" %}</a>
 </div>
 {% endif %}
 

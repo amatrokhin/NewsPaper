@@ -15,12 +15,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework import routers
+from news import views
+
+
+# register viewsets, basename for correct link
+router = routers.DefaultRouter()
+router.register(r'news', views.NewsViewset, basename='news')
+router.register(r'articles', views.ArticleViewset, basename='articles')
 
 urlpatterns = [
+   path('i18n/', include('django.conf.urls.i18n')),               # inbuild endpoints with localisation
    path('admin/', admin.site.urls),
    path('pages/', include('django.contrib.flatpages.urls')),
    path('news/', include('news.urls')),
    path('articles/', include('articles.urls')),
    path('', include('authorisation.urls')),
    path('', include('allauth.urls')),
+   path('api/', include(router.urls)),                            # inclide links for REST API
+   path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]

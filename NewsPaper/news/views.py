@@ -1,5 +1,6 @@
 import re
 from datetime import datetime
+import pytz                                     # standart module to work with timezones
 
 # Import class to output objects from DB
 from django.views.generic import (
@@ -12,8 +13,14 @@ from django.shortcuts import redirect
 from django.db.models import Count
 from django.http import HttpResponseForbidden
 from django.core.cache import cache
+from django.utils.translation import gettext
+from django.utils import timezone
+from rest_framework import viewsets
+from rest_framework import permissions
+
 
 from .models import Post, Author, Category
+from .serializers import PostSerializer
 from .filters import PostsFilter
 from .forms import PostsForm
 
@@ -27,6 +34,16 @@ class PostsList(ListView):                      # responsible for table of posts
     def get_queryset(self, *args, **kwargs):
         # check if queryset is in cache, if not add
         return cache.get_or_set('posts_list', super().get_queryset(), 300)
+
+    def get_context_data(self, **kwargs):       # add timezone to the context
+        context = super().get_context_data(**kwargs)
+        context['current_time'] = timezone.now()
+        context['timezones'] = pytz.common_timezones
+        return context
+
+    def post(self, request):                    # make a form for user to choose timezone
+        request.session['django_timezone'] = request.POST['timezone']
+        return redirect(request.get_full_path())
 
 
 class PostDetail(DetailView):                   # responsible for detailed post output on a page
@@ -94,7 +111,8 @@ class NewsCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):      
 
         # only allow maximum of 3 posts a day
         if posts_today >= 3:
-            return HttpResponseForbidden('Вы не можете создавать более 3-х постов в день')
+            message = gettext('Вы не можете создавать более 3-х постов в день')
+            return HttpResponseForbidden(message)
         else:
             return super().get(request, *args, **kwargs)
 
@@ -126,7 +144,8 @@ class ArticlesCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):  
 
         # only allow maximum of 3 posts a day
         if posts_today >= 3:
-            return HttpResponseForbidden('Вы не можете создавать более 3-х постов в день')
+            message = gettext('Вы не можете создавать более 3-х постов в день')
+            return HttpResponseForbidden(message)
         else:
             return super().get(request, *args, **kwargs)
 
@@ -173,3 +192,19 @@ def unsubscribe_cat(request, pk):                     # unsubscribe user from ca
     # reload current page with parameters applied before
     path = re.sub(r'/\d*/unsubscribe', '', request.get_full_path())
     return redirect(path)
+
+
+class NewsViewset(viewsets.ModelViewSet):                   # to work with REST API
+    queryset = Post.objects.filter(type='N')
+    serializer_class = PostSerializer
+
+    # all methods awailible when registered, if not then only GET, HEAD, OPTIONS
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
+class ArticleViewset(viewsets.ModelViewSet):                # to work with REST API
+    queryset = Post.objects.filter(type='A')
+    serializer_class = PostSerializer
+
+    # all methods awailible when registered, if not then only GET, HEAD, OPTIONS
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
