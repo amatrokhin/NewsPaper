@@ -34,7 +34,6 @@ class PostsForm(forms.ModelForm):                    # responsible for form to c
     class Meta:
         model = Post
         fields = [
-    #        'author',                              # don't need it no more as now user becomes author automatically
             'title',
             'text',
             'categories',

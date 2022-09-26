@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.db.models import Count
 from django.http import HttpResponseForbidden
+from django.core.cache import cache
 
 from .models import Post, Author, Category
 from .filters import PostsFilter
@@ -23,12 +24,25 @@ class PostsList(ListView):                      # responsible for table of posts
     context_object_name = 'posts'
     paginate_by = 10
 
+    def get_queryset(self, *args, **kwargs):
+        # check if queryset is in cache, if not add
+        return cache.get_or_set('posts_list', super().get_queryset(), 300)
+
 
 class PostDetail(DetailView):                   # responsible for detailed post output on a page
-    # queryset = Post.objects.filter(type='N')  # first I wanted only news then I decideed that I want articles as well
     model = Post
     template_name = 'post.html'
     context_object_name = 'post'
+
+    def get_object(self, *args, **kwargs):      # use cache to get post
+        post = cache.get(f'post-{self.kwargs["pk"]}', None)     # find post in cache or return None
+
+        # if post not in cache find in DB and write to cache
+        if not post:
+            post = super().get_object(queryset=self.queryset)
+            cache.set(f'post-{self.kwargs["pk"]}', post, 300)   # store for 5 min in cache
+
+        return post
 
 
 class PostsSearch(ListView):                    # responsible for posts list with filters output
@@ -39,7 +53,8 @@ class PostsSearch(ListView):                    # responsible for posts list wit
     paginate_by = 10
 
     def get_queryset(self):                     # redefine function to get posts list
-        queryset = super().get_queryset()       # get standart queryset
+        # check if queryset is in cache, if not add
+        queryset = cache.get_or_set('posts_list', super().get_queryset(), 300)
 
         # save filtration in class object to reuse later
         self.filterset = PostsFilter(self.request.GET, queryset)

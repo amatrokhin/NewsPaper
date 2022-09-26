@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.core.cache import cache
 
 
 class Author(models.Model):                 # table of authors
@@ -62,6 +63,14 @@ class Post(models.Model):                   # table of news and articles
     def get_absolute_url(self):             # this allows us to go to the post page after creating a post
         return reverse('post_detail', args=[str(self.id)])
 
+    def save(self, *args, **kwargs):        # delete instances from cache when any post is updated
+        super().save(*args, **kwargs)
+        cache.delete_many([f'post-{self.pk}', 'posts_list'])
+
+    def delete(self, *args, **kwargs):      # delete instances from cache when any post is deleted
+        super().delete(*args, **kwargs)
+        cache.delete_many([f'post-{self.pk}', 'posts_list'])
+
 
 class PostCategory(models.Model):           # table for many-to-many relation between posts and categories
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -80,6 +89,9 @@ class Comment(models.Model):                # table of comments to posts
 
     def dislike(self):
         self.rating -= 1
+
+    def preview(self):
+        return self.text[:124] + '...'
 
 
 class Subscribers(models.Model):            # many-to-many relation between users and categories
