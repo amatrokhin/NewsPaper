@@ -1,0 +1,179 @@
+#1		Да,я иногда забываю сразу класть созданные сущности в переменные)))
+>>> from django.contrib.auth.models import User 
+>>> User.objects.create_user('apple')           
+<User: apple>
+>>> User.objects.create_user('butter') 
+<User: butter>
+
+#2
+>>> from news.models import Author, Category, Post, Comment
+>>> apple = User.objects.get(username='apple')
+>>> apple_a = Author.objects.create(user=apple)
+>>> butter = User.objects.get(username='butter')
+>>> butter_a = Author.objects.create(user=butter)
+
+#3
+>>> list_ = ['sport', 'politics', 'education', 'finance']
+>>> for elem in list_:
+...     Category.objects.create(cat_name=elem)
+... 
+<Category: Category object (1)>
+<Category: Category object (2)>
+<Category: Category object (3)>
+<Category: Category object (4)>
+
+#4
+>>> title_1 = 'Premier League predictions: Jones Knows thinks Liverpool will win without conceding vs Crystal Palace'
+>>> text_1 = "After their flimsy performance at Fulham, Jurgen Klopp will get a reaction out of Liverpool when they face Crystal Palace on Monday Night Football, says Jones Knows.\nIf 
+Liverpool bring the same lack of zip, physicality, desire and pressing to the table in their 2-2 draw with Fulham, then those taking the 1/4 with Sky Bet on a home win could be about t
+o go through some financial pain.\nA team that usually averaged 19.1 shots per game in the Premier League over the past year and that registers an expected goals figure of 2.50 fell wa
+y short of their usual standards, posting just 11 shots and an xG of 1.23. They also recorded the lowest distance run by any team last weekend and were outrun by Fulham by a margin of 
+just under 7km - only Aston Villa (7km) and Wolves (8.6km) were outrun by a greater distance on the opening weekend.\nJurgen Klopp will have been privately fuming and embarrassed by th
+ose numbers.\nThat makes this absolutely terrible timing for Crystal Palace to head to Anfield. A reaction is expected.\nDespite beginning their season with defeat against Arsenal, the
+re were encouraging signs for Patrick Vieira's side in their approach play but I'm yet to truly be convinced they will score enough goals to seriously make any inroads into the top eig
+ht this season.\nThe Reds have conceded just four goals in their last 14 Premier League home games and a fourth straight win without conceding at home to Palace is expected.\nScore pre
+diction: 2-0."
+>>> Post.objects.create(author=apple_a, title=title_1, text=text_1)
+<Post: Post object (1)>
+>>> title_2 = "Vor 20 Jahren vorgestellt\nDie Vorschläge der Hartz-Kommission zur Arbeitsmarktreform"
+>>> text_2 = "Für viele ist der Name Peter Hartz verknüpft mit einer Politik der sozialen Härte. Bundeskanzler Gerhard Schröder hatte eine Kommission unter Vorsitz des Ex-VW-Managers V
+orschläge für Arbeitsmarkt-Reformen erarbeiten lassen. Heute vor 20 Jahren stellte sie ihre umstrittenen Ergebnisse vor.\n'Heute ist ein schöner Tag für die Arbeitslosen in Deutschland
+. Wir haben in der Kommission einstimmig alle Eckpunkte beschlossen und kommen hiermit zu einem Konzept, wie wir die Arbeitslosigkeit um zwei Millionen reduzieren wollen.'\nBerlin, 16.
+ August 2002: Während einer Feierstunde im Französischen Dom überreichte Peter Hartz den über 300 Seiten dicken Abschlussbericht seiner Kommission. Ihr Name: 'Moderne Dienstleistungen 
+am Arbeitsmarkt'.\nHartz' Coup als VW-Personalvorstand \nBundeskanzler Schröder hatte sie ins Leben gerufen, um neue Wege aus der Arbeitslosigkeit zu finden. 15 Mitglieder hatte die Ko
+mmission: Sie kamen aus großen Unternehmen, den Gewerkschaften, der Landes- und Kommunalpolitik oder der Wissenschaft. Doch ihr prominentester Vertreter war Peter Hartz. Mit viel Kreat
+ivität hatte er in den 90er-Jahren bei Volkswagen einen großen Stellenabbau verhindern können. Nun sollte er ein ganzes Land umkrempeln:\n\n'Herr Bundeskanzler, wir haben hier die Zuku
+nft für zwei Millionen Arbeitslose konzipiert. Ich wünsche Ihnen und uns viel Erfolg, dies umzusetzen. Vielen Dank.'Rot-Grün wollte sich als Modernisierer profilieren\nEigentlich sollt
+e die Kommission nur Vorschläge für die Modernisierung der Bundesanstalt für Arbeit machen, nachdem diese wegen gefälschter Vermittlungsbilanzen ins Kreuzfeuer der Kritik geraten war. 
+Doch mit der Zeit weitete sich ihr Aufgabenbereich auf den gesamten Arbeitsmarkt aus. Ganz im Sinne der rot-grünen Bundesregierung, die sich als Modernisierer profilieren wollte. Der d
+eutschen Wirtschaft ging es damals nicht gut, und der schon lange als verkrustet geltende Arbeitsmarkt wurde zum Sündenbock für die Flaute gemacht. Klaus Barthel saß damals für die SPD
+ im Bundestag:\n'Eines der Hauptargumente war ja immer, die Wettbewerbsfähigkeit Deutschlands reicht nicht, und Wettbewerbsfähigkeit wurde damals so dekliniert, dass unter den Bedingun
+gen der Globalisierung wir nicht besser sein müssen als andere, sondern vor allen Dingen billiger sein müssen, und dass deswegen die Sozialsysteme, die Löhne sinken müssen, die Kosten 
+sinken müssen.'\n'Ich-AGs' und\nMini-Jobs\nGut vier Millionen Menschen waren im Jahr 2002 ohne Arbeit, ein Drittel von ihnen langzeitarbeitslos. Vier Reformpakete sollten nun den Arbei
+tsmarkt auf Trab bringen: Personal-Service-Agenturen sollten die Leiharbeit fördern, 'Ich-AGs' und Mini-Jobs die Schwarzarbeit eindämmen, Arbeitsvermittler wurden zu Fallmanagern. Ihre
+ Aufgaben, die sich bislang auf Arbeits- und Sozialamt verteilten, sollten in lokalen Jobcentern gebündelt werden. Und in deren Fluren sollte ein neuer, kälterer Wind einziehen – Bunde
+skanzler Gerhard Schröder bei der Feierstunde im Französischen Dom:\n'Niemandem aber wird künftig gestattet sein, sich zu Lasten der Gemeinschaft zurückzulehnen. Wer zumutbare Arbeit a
+blehnt – und wir werden die Zumutbarkeitskriterien verändern – der, meine Damen und Herren, wird mit Sanktionen rechnen müssen.'\nArbeitslosengeld II – vulgo 'Hartz IV'\nVor allem die 
+vierte Stufe der Reformen, die Zusammenführung von Arbeitslosen- und Sozialhilfe, stieß auf viel Kritik. Denn der Regelsatz des neuen Arbeitslosengeldes II – umgangssprachlich 'Hartz I
+V' – wurde nach einem Jahr ohne Arbeit pauschal auf 345 Euro festgelegt, egal, was und wie lange jemand vor dem Jobverlust gearbeitet hatte. Und dieses Geld konnte bei Versäumnissen no
+ch weiter gekürzt werden. Ein Betroffener:\n'Man muss teilweise acht bis neun oder zehn Bewerbungen machen, aber das schafft man halt nicht jeden Monat. Wenn man es nicht schafft, kann
+ es passieren, dass man Sanktionen kriegt, wird das Geld gekürzt.'\nAdieu Hartz IV\nDamit ist seit Mai 2022 Schluss: im Vorgriff auf das geplante Bürgergeld hat die Bundesregierung die
+ Sanktionsregelungen schon jetzt weitgehend außer Kraft gesetzt.\nIm Laufe der letzten 16 Jahre hat sich die Arbeitslosenquote in Deutschland mehr als halbiert. Experten sind allerding
+s uneins, welchen Anteil die Hartz-Reformen daran haben. Die Qualität der Beschäftigungsverhältnisse konnten sie auf jeden Fall nicht verbessern: Immer mehr Menschen arbeiten in Teilze
+it oder haben einen Minijob. Und fast jeder fünfte Arbeitnehmer in Deutschland kommt trotz Vollzeit nur auf einen sehr niedrigen Monatsverdienst"
+>>> Post.objects.create(author=apple_a, type='N', title=title_2, text=text_2)
+<Post: Post object (2)>
+>>> Post.objects.create(author=butter_a, title='какой-то title', text='какой-то text')
+<Post: Post object (3)>
+
+#5
+>>> post_1 = Post.objects.get(title=title_1)
+>>> cat_sport = Category.objects.get(cat_name='sport')
+>>> cat_politics = Category.objects.get(cat_name='politics') 
+>>> cat_finance = Category.objects.get(cat_name='finance')   
+>>> post_1.categories.add(cat_sport)
+>>> post_2 = Post.objects.get(pk=2)
+>>> post_2.categories.add(cat_politics, cat_finance)
+>>> post_3 = Post.objects.get(pk=3)     
+>>> post_3.categories.add(cat_finance)
+>>> post_2.categories
+>>> post_2.categories.values('cat_name')
+<QuerySet [{'cat_name': 'politics'}, {'cat_name': 'finance'}]>
+>>> post_1.categories.values('cat_name') 
+<QuerySet [{'cat_name': 'sport'}]>
+
+#6
+>>> Comment.objects.create(post=post_1, user=apple, text='я сделяль')  
+<Comment: Comment object (1)>
+>>> Comment.objects.create(post=post_1, user=butter, text='ничоси O_o') 
+<Comment: Comment object (2)>
+>>> Comment.objects.create(post=post_2, user=butter, text='ничоси O_o x2')
+<Comment: Comment object (3)>
+>>> Comment.objects.create(post=post_3, user=apple, text='extremely concise')    
+<Comment: Comment object (4)>
+>>> comment_1, comment_2, comment_3, comment_4 = Comment.objects.all()
+
+#7
+>>> for i in range(10):
+...      post_1.like()
+...      post_2.like()
+...      if i % 3:
+...              post_2.dislike()
+...      post_3.dislike()
+...      if i % 5:
+...              post_3.like()
+...      if i % 4:
+...              comment_1.like()
+... 
+>>> comment_2.like()
+>>> comment_2.dislike()
+>>> comment_3.like()
+>>> comment_3.like()
+>>> comment_4.dislike()
+>>> comment_1.save()
+>>> comment_2.save()
+>>> comment_3.save()
+>>> comment_4.save() 
+>>> post_1.save()    
+>>> post_2.save() 
+>>> post_3.save()
+
+#8             
+>>> Author.update_rating(apple_a)  
+>>> Author.update_rating(butter_a)           
+>>> apple_a.save()
+>>> butter_a.save()
+
+#9
+>>> apple_a.rating
+57
+>>> butter_a.rating
+-23
+>>> best = Author.objects.all().order_by('-rating')[0]
+>>> best == apple_a
+True
+>>> best.user.username
+'apple'
+>>> best.rating
+57
+
+#10
+>>> best_post = Post.objects.filter(type='A').order_by('-rating')[0]
+>>> best_post.time_in
+datetime.datetime(2022, 8, 19, 11, 19, 57, 805089, tzinfo=datetime.timezone.utc)
+>>>best_post.time_in.strftime("%d-%b-%Y %H:%M:%S")
+'19-Aug-2022 11:19:57'
+>>> best_post.author.user.username
+'apple'
+>>> best_post.rating
+10
+>>> best_post.title
+'Premier League predictions: Jones Knows thinks Liverpool will win without conceding vs 
+Crystal Palace'
+>>> best_post.preview()
+'After their flimsy performance at Fulham, Jurgen Klopp will get a reaction out of Liver
+pool when they face Crystal Palace on...'
+
+#11
+>>> for i, comment in enumerate(best_post.comment_set.all()):
+...     print('-------------------')
+...     print(f'Comment {i+1}')
+...     print(f'Date: {comment.time_in}')
+...     print(f'User: {comment.user.username}')
+...     print(f'Rating: {comment.rating}')
+...     print(f'Text: {comment.text}')
+...     print()
+... 
+-------------------
+Comment 1
+Date: 2022-08-19 12:04:35.404391+00:00
+User: apple
+Rating: 7
+Text: я сделяль
+
+-------------------
+Comment 2
+Date: 2022-08-19 12:05:23.669662+00:00
+User: butter
+Rating: 0
+Text: ничоси O_o
